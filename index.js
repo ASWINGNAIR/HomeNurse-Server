@@ -22,6 +22,9 @@ cpServer.use(cors())
 // parse the data -> middleware to parse the data
 cpServer.use(express.json())
 
+// exporting uploaded folder
+cpServer.use('/upload',express.static('./Uploads'))
+
 // use router
 cpServer.use(router)
 

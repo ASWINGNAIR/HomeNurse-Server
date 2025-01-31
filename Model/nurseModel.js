@@ -17,33 +17,35 @@ const nurseSchema = new mongoose.Schema({
         type : String
     },
     description : {
+        required : true,
         type : String
     },
     specialization : {
+        required : true,
         type : String
     },
     qualification : {
+        required : true,
         type : String
     },
     experience : {
+        required : true,
         type : String 
     },
     mobile : {
-        type : String
-    },
-    linkedin : {
-        type : String
-    },
-    whatsapp : {
+        required : true,
         type : String
     },
     profile : {
+        required : true,
         type : String
     },
     degCertificate : {
+        required : true,
         type : String
     },
     expCertificate : {
+        required : true,
         type : String
     }
 })
