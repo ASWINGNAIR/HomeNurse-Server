@@ -82,36 +82,51 @@ exports.getAllNurseProfile = async(req ,res)=>{
     }
 }  
 
-// update nurse profile
-exports.updateNurseProfileController=async(req,res)=>{
-    const {id} = req.params
-    const userId = req.payload
+// remove nurse by the admin
+exports.rejectNurse = async(req , res)=>{
+    const {id}= req.params
 
-    const { username, email, password, mobile, qualification, experience, specialization, description } = req.body
-    console.log(username , email , password , mobile , qualification , experience , specialization , description);
-
-    const profile = req.files?.profile ? req.files.profile[0].filename : null
-    console.log(profile);
-    
     try {
-        const existingNurses = await nurses.findByIdAndUpdate({_id:id},{
-                username,
-                email,
-                password,
-                mobile,
-                qualification,
-                experience,
-                specialization,
-                description,
-                profile
-        })
-        await existingNurses.save()
-        res.status(200).json(existingNurses)
+        await nurses.findByIdAndDelete({_id:id})
+        res.status(200).json('Project Deleted Succesfully') 
     } catch (error) {
         res.status(401).json(error)
     }
 }
 
+// approve nurse by admin
+exports.approveNurse = async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const updatedNurse = await nurses.findByIdAndUpdate(
+            id,
+            { status: "Approved" },
+            { new: true }
+        );
 
+        if (updatedNurse) {
+            res.status(200).json(updatedNurse);
+        } else {
+            res.status(404).json({ message: "Nurse not found" });
+        }
+    } catch (error) {
+        res.status(500).json(error);
+    }
+};
 
+// get all approved nurse
+exports.getApprovedNurses = async (req, res) => {
+    const searchKey = req.query.search || ""
+    
+    try {
+        const query = searchKey 
+            ? { status: "Approved", specialization: { $regex: searchKey, $options: "i" } } 
+            : { status: "Approved" };
+
+        const approvedNurses = await nurses.find(query)
+        res.status(200).json(approvedNurses)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}

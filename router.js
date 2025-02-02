@@ -40,15 +40,16 @@ router.post('/nurseLogin',nurseController.nurseLogin)
 router.get('/nurse-profile',jwtMiddleware,nurseController.getNurseProfile)
 
 // get all nurse profile
-router.get('/allNurse-profile',jwtMiddleware,nurseController.getAllNurseProfile)
+router.get('/allNurse-profile',nurseController.getAllNurseProfile)
 
-//  update nurse profile
-router.put('/update-nurseProfile/:id',jwtMiddleware,multerConfig.fields([
-    { name: 'profile', maxCount: 1 },         // 1 image
-    { name: 'degCertificate', maxCount: 1 }, // 1 degree certificate (PDF)
-    { name: 'expCertificate', maxCount: 1 }, // 1 experience certificate (PDF)
-]),nurseController.updateNurseProfileController)
+// remove nurse by admin
+router.delete('/reject-nurse/:id',jwtMiddleware,nurseController.rejectNurse)
 
+// Approve nurse by admin
+router.put('/approve-nurse/:id', jwtMiddleware, nurseController.approveNurse)
+
+// get all approved nurses
+router.get('/approvedNurses',nurseController.getApprovedNurses)
 
 
 module.exports = router

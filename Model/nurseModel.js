@@ -47,6 +47,9 @@ const nurseSchema = new mongoose.Schema({
     expCertificate : {
         required : true,
         type : String
+    },
+    status: { 
+        type: String, 
     }
 })
 
